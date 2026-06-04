@@ -1,0 +1,4 @@
+# Sperrt direkten HTTP-Zugriff auf die Datendatei (Apache/Produktivbetrieb)
+<Files "*.json">
+    Require all denied
+</Files>

@@ -1,0 +1,8 @@
+# Datenspeicher – enthält Lehrernamen, Einsätze, Passwort-Hash
+einsaetze.json
+
+# Temporäre Dateien (Editor, Claude Code, OS)
+*.tmp.*
+.DS_Store
+Thumbs.db
+desktop.ini
