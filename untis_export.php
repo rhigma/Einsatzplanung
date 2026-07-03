@@ -66,58 +66,65 @@ $buildLine = function (int $id, int $soll, int $ist, int $soll2, string $klasse,
     $stdDec    = sprintf('%.5f', (float)$std);
     $stdBig    = $std * 100000;
     $dist      = (int)floor($std / 2);
+    $classType = $klasse !== '' ? 'Bn' : 'n';
 
-    $fields = [
-        $id,                           //  1 Unterrichts-ID
-        $soll,                         //  2 Wochenstunden Soll
-        $ist,                          //  3 Wochenstunden Ist
-        $soll2,                        //  4 Wochenstunden Soll2
-        $klasse,                       //  5 Klasse
-        $lehrer,                       //  6 Lehrkraft
-        $fachKurz,                     //  7 Fach
-        '',                            //  8 Raum
-        '',                            //  9
-        0,                             // 10
-        $stdDec,                       // 11 Wochenstunden (Dezimal)
-        '', '', '',                    // 12-14
-        $startDate,                    // 15 Startdatum
-        $endDate,                      // 16 Enddatum
-        $weight,                       // 17 Gewicht
-        '', '', '', '', '',            // 18-22
-        '',                            // 23
-        $klasse !== '' ? 'Bn' : 'n',   // 24 Klassentyp
-        '', '', '',                    // 25-27
-    ];
+    // Felder als Array bauen
+    $f = [];
 
-    // Verteilung (Halbjahre) – nur wenn std > 1
-    if ($std > 1) {
-        $fields[] = $dist;             // 28
-        $fields[] = $dist;             // 29
-    } else {
-        $fields[] = '';                // 28
-        $fields[] = '';                // 29
-    }
-
-    $fields = array_merge($fields, [
-        '', '', '', '',                // 30-33
-        '',                            // 34
-        0, 0,                          // 35-36
-        '', '', '', '',                // 37-40
-        $stdBig,                       // 41 Stunden × 100000
-        $stdDec,                       // 42 Wochenstunden (Dezimal)
-        '', '', '', '',                // 43-46
-        '',                            // 47
-        0,                             // 48
-    ]);
-
-    // Hilfsfunktion: Feld quoten (nur nicht-leere Strings > 0 Zeichen ohne Anführungszeichen)
-    $csvLine = implode(',', array_map(function ($v) {
+    $q = function ($v, string $mode = 'auto') {
+        if ($mode === 'force') return '"' . str_replace('"', '""', $v) . '"';
+        if ($mode === 'no')    return (string)$v;
+        // auto: nicht-leere Strings, die nicht rein numerisch sind
         if (is_string($v) && $v !== '' && !is_numeric($v)) {
             return '"' . str_replace('"', '""', $v) . '"';
         }
         return (string)$v;
-    }, $fields));
-    return $csvLine;
+    };
+    // Leere Strings immer leer lassen, auch bei force
+    $quoteForce = function ($v) use ($q) {
+        if ($v === '' || $v === null) return '';
+        return $q($v, 'force');
+    };
+
+    $f[] = $q($id, 'no');                         //  1 Unterrichts-ID
+    $f[] = $q($soll, 'no');                       //  2 Wochenstunden Soll
+    $f[] = $q($ist, 'no');                        //  3 Wochenstunden Ist
+    $f[] = $q($soll2, 'no');                      //  4 Wochenstunden Soll2
+    $f[] = $quoteForce($klasse);                  //  5 Klasse
+    $f[] = $q($lehrer, 'force');                  //  6 Lehrkraft
+    $f[] = $q($fachKurz, 'force');                //  7 Fach
+    $f[] = '';                                   //  8 Raum
+    $f[] = '';                                   //  9
+    $f[] = '0';                                  // 10
+    $f[] = $q($stdDec, 'no');                     // 11 Wochenstunden (Dezimal)
+    $f[] = ''; $f[] = ''; $f[] = '';             // 12-14
+    $f[] = $q($startDate, 'force');               // 15 Startdatum
+    $f[] = $q($endDate, 'force');                 // 16 Enddatum
+    $f[] = $q($weight, 'no');                     // 17 Gewicht
+    $f[] = ''; $f[] = ''; $f[] = ''; $f[] = ''; $f[] = ''; // 18-22
+    $f[] = '';                                   // 23
+    $f[] = $quoteForce($classType);               // 24 Klassentyp
+    $f[] = ''; $f[] = ''; $f[] = '';             // 25-27
+
+    // Verteilung (Halbjahre)
+    if ($std > 1) {
+        $f[] = $q($dist, 'no');                   // 28
+        $f[] = $q($dist, 'no');                   // 29
+    } else {
+        $f[] = ''; $f[] = '';                    // 28-29
+    }
+
+    $f[] = ''; $f[] = ''; $f[] = ''; $f[] = ''; // 30-33
+    $f[] = '';                                   // 34
+    $f[] = '0'; $f[] = '0';                      // 35-36
+    $f[] = ''; $f[] = ''; $f[] = ''; $f[] = ''; // 37-40
+    $f[] = $q($stdBig, 'no');                     // 41 Stunden × 100000
+    $f[] = $q($stdDec, 'no');                     // 42 Wochenstunden (Dezimal)
+    $f[] = ''; $f[] = ''; $f[] = ''; $f[] = ''; // 43-46
+    $f[] = '';                                   // 47
+    $f[] = '0';                                  // 48
+
+    return implode(',', $f) . ',';
 };
 
 // ---------------------------------------------------------------------------
