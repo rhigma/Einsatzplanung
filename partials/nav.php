@@ -17,6 +17,7 @@ $_pctLk  = $_ns['verfuegbar'] > 0 ? min(100, round($_verteiltGes / $_ns['verfueg
     <a href="lehrkraefte.php" class="<?= $current === 'lehrkraefte.php' ? 'active' : '' ?>">Lehrkräfte</a>
     <a href="verwaltung.php" class="<?= $current === 'verwaltung.php' ? 'active' : '' ?>">Verwaltung</a>
     <a href="druck.php" class="<?= $current === 'druck.php' ? 'active' : '' ?>">Druckansicht</a>
+    <a href="untis_export.php" class="<?= $current === 'untis_export.php' ? 'active' : '' ?>">Untis Export</a>
     <a href="historie.php" class="<?= $current === 'historie.php' ? 'active' : '' ?>">Historie</a>
     <a href="hilfe.php" class="<?= $current === 'hilfe.php' ? 'active' : '' ?>">Hilfe</a>
   </div>

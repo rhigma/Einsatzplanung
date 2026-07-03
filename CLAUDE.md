@@ -50,6 +50,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Reset all assignments (dangerous action with confirmation)
 - Teacher CRUD operations with inline form validation
 
+#### `untis_export.php` (Untis Export)
+- Generates GPU002.TXT file for import into Untis scheduling software
+- Maps full subject names to Untis short codes (Deutsch→D, Mathematik→M, etc.)
+- Includes all class-based assignments as individual lesson entries
+- Includes `zusatz` (additional assignments) as lessons without class
+- Exports as downloadable CSV file with standard Untis format fields (dates, weights, period distribution)
+- No room data required (field left empty)
+- School year start/end dates derived from settings
+
 #### Partial Templates (`partials/`)
 - `head.php`: Shared CSS (design system with color variables, layout, forms, tables, buttons)
 - `nav.php`: Navigation bar (context-aware active link highlighting, logout button)
@@ -150,8 +159,16 @@ Subjects follow a predefined order in `einsatzplan.php`: Deutsch → Mathematik 
 - No password reset mechanism—only choice is to update config directly
 
 ### Export/Backup Data
-- Download `einsaetze.json` from server
-- JSON structure is human-readable and can be edited manually if needed
+- Download `einsaetze.json` from server (JSON structure is human-readable and can be edited manually if needed)
+- **Untis Export**: Navigate to "Untis Export" in the nav bar to download `GPU002.TXT` for import into Untis
+
+### Subject-Shortcode-Mapping (for Untis Export)
+When adding new subjects, add a mapping entry in `shortFach()` in `untis_export.php`:
+- `'Neues Fach' => 'Kürzel'`
+- Unmapped subjects are auto-abbreviated to max 12 chars
+
+### School Year → Date Calculation
+The export in `untis_export.php` parses `schuljahr` (e.g. "2025/26") to derive start date (Sept 1) and end date (July 31). A weight factor of `std / 227.27` is used per Untis convention.
 
 ## Debugging Tips
 

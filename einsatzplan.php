@@ -1155,7 +1155,8 @@ function updateChips() {
     const k    = chip.querySelector('.kuerzel').textContent;
     const info = chip.querySelector('.stunden-info');
     const gesamt = parseInt(info.textContent.split('/')[1]);
-    const eingetragen = stunden[k] || 0;
+    const zusatzStd = LK_DATA[k]?.zusatz || 0;
+    const eingetragen = (stunden[k] || 0) + zusatzStd;
     info.textContent = eingetragen + '/' + gesamt + ' Std.';
     chip.dataset.offen = gesamt - eingetragen;
     chip.className = 'lk-chip ' +

@@ -1,16 +1,16 @@
 # Einsatzplanung
 
-Webbasiertes Stundenplanungs-Tool für Grundschulen. Lehrkräfte werden Klassen und Fächern zugeordnet; Auslastung, Änderungshistorie und Druckansichten sind integriert.
+Webbasiertes Stundenplanungs-Tool fÃ¼r Grundschulen. LehrkrÃ¤fte werden Klassen und FÃ¤chern zugeordnet; Auslastung, Ã„nderungshistorie und Druckansichten sind integriert.
 
-Entwickelt für die **33. Grundschule Spandau**.
+Entwickelt fÃ¼r die **33. Grundschule Spandau**.
 
 ---
 
 ## Voraussetzungen
 
 - PHP 7.4 oder neuer (mit JSON-Erweiterung)
-- Beliebiger Webserver (Apache, Nginx, Caddy) – oder der eingebaute PHP-Entwicklungsserver
-- Schreibrechte auf `einsaetze.json` für den Webserver-Prozess
+- Beliebiger Webserver (Apache, Nginx, Caddy) â€“ oder der eingebaute PHP-Entwicklungsserver
+- Schreibrechte auf `einsaetze.json` fÃ¼r den Webserver-Prozess
 
 ---
 
@@ -20,9 +20,9 @@ Entwickelt für die **33. Grundschule Spandau**.
 php -S localhost:8000 router.php
 ```
 
-Browser öffnen: `http://localhost:8000`
+Browser Ã¶ffnen: `http://localhost:8000`
 
-Standard-Passwort: `schule2026` – **vor dem ersten produktiven Einsatz ändern** (siehe [Einstellungen](#einstellungen)).
+Standard-Passwort: `schule2026` â€“ **vor dem ersten produktiven Einsatz Ã¤ndern** (siehe [Einstellungen](#einstellungen)).
 
 ---
 
@@ -34,7 +34,7 @@ Standard-Passwort: `schule2026` – **vor dem ersten produktiven Einsatz ändern
    touch einsaetze.json
    chown www-data:www-data einsaetze.json
    ```
-3. Im Browser einloggen und unter **Verwaltung → Einstellungen** Schulname, Schuljahr und Passwort setzen
+3. Im Browser einloggen und unter **Verwaltung â†’ Einstellungen** Schulname, Schuljahr und Passwort setzen
 
 ---
 
@@ -42,63 +42,75 @@ Standard-Passwort: `schule2026` – **vor dem ersten produktiven Einsatz ändern
 
 ```
 einsatzplanung/
-├── config.php          Konfiguration, Session, Datenzugriff
-├── index.php           Login-Seite
-├── einsatzplan.php     Hauptansicht: Planungstabelle
-├── lehrkraefte.php     Lehrkräfte-Übersicht mit Auslastungskarten
-├── verwaltung.php      Admin: Klassen, Lehrkräfte, Import, Backup
-├── druck.php           Druckoptimierte Ansicht
-├── historie.php        Änderungshistorie
-├── hilfe.php           Integrierte Dokumentation
-├── router.php          URL-Router für den PHP-Entwicklungsserver
-├── einsaetze.json      Datenspeicher (wird automatisch angelegt)
-└── partials/
-    ├── head.php        Gemeinsames CSS (Design-System)
-    └── nav.php         Navigationsleiste
+â”œâ”€â”€ config.php          Konfiguration, Session, Datenzugriff
+â”œâ”€â”€ index.php           Login-Seite
+â”œâ”€â”€ einsatzplan.php     Hauptansicht: Planungstabelle
+â”œâ”€â”€ lehrkraefte.php     LehrkrÃ¤fte-Ãœbersicht mit Auslastungskarten
+â”œâ”€â”€ verwaltung.php      Admin: Klassen, LehrkrÃ¤fte, Import, Backup
+â”œâ”€â”€ untis_export.php    GPU002.TXT-Export für Untis-Import
+â”œâ”€â”€ druck.php           Druckoptimierte Ansicht
+â”œâ”€â”€ historie.php        Ã„nderungshistorie
+â”œâ”€â”€ hilfe.php           Integrierte Dokumentation
+â”œâ”€â”€ router.php          URL-Router fÃ¼r den PHP-Entwicklungsserver
+â”œâ”€â”€ einsaetze.json      Datenspeicher (wird automatisch angelegt)
+â””â”€â”€ partials/
+    â”œâ”€â”€ head.php        Gemeinsames CSS (Design-System)
+    â””â”€â”€ nav.php         Navigationsleiste
 ```
 
 ---
 
-## Funktionsübersicht
+## FunktionsÃ¼bersicht
 
 ### Einsatzplan
-- Tabelle: Klassen als Zeilen, Fächer als Spalten
-- Eintrag per Kürzel mit Autocomplete, Stunden-Feld pro Eintrag
-- Mehrere Lehrkräfte pro Zelle möglich (Teilstunden)
-- Zellen-Farbcodes: rot = Bedarf offen, orange = Doppelsteckung, weiß = erfüllt
+- Tabelle: Klassen als Zeilen, FÃ¤cher als Spalten
+- Eintrag per KÃ¼rzel mit Autocomplete, Stunden-Feld pro Eintrag
+- Mehrere LehrkrÃ¤fte pro Zelle mÃ¶glich (Teilstunden)
+- Zellen-Farbcodes: rot = Bedarf offen, orange = Doppelsteckung, weiÃŸ = erfÃ¼llt
 - Notiz-Feld pro Zelle (erscheint in Druckansicht, wird historisiert)
-- Spaltenüberschriften bleiben beim Scrollen sichtbar
+- SpaltenÃ¼berschriften bleiben beim Scrollen sichtbar
 
 ### Lehrkraft-Chips
 - Leiste oberhalb der Tabelle mit Auslastung pro Lehrkraft
-- **Hover:** Popover mit vollständigem Namen, Fortschrittsbalken und Einsatz-Liste
-- **Klick:** Alle Einsätze der Lehrkraft in der Tabelle hervorheben
-- **Toggle „Nur Klassen mit Einsatz":** Blendet Klassen ohne Einsatz der markierten Lehrkraft aus
-- **Sortierung:** A–Z oder nach offenen Stunden absteigend
+- **Hover:** Popover mit vollstÃ¤ndigem Namen, Fortschrittsbalken und Einsatz-Liste
+- **Klick:** Alle EinsÃ¤tze der Lehrkraft in der Tabelle hervorheben
+- **Toggle â€žNur Klassen mit Einsatz":** Blendet Klassen ohne Einsatz der markierten Lehrkraft aus
+- **Sortierung:** Aâ€“Z oder nach offenen Stunden absteigend
 
-### Lehrkräfte-Übersicht
-- Karten mit Fortschrittsbalken, Stunden-Verhältnis und Einsatz-Liste
+### LehrkrÃ¤fte-Ãœbersicht
+- Karten mit Fortschrittsbalken, Stunden-VerhÃ¤ltnis und Einsatz-Liste
 - Druckbar (eine Seite pro Lehrkraft)
 
 ### Verwaltung
 | Bereich | Funktion |
 |---|---|
 | Einstellungen | Schulname, Schuljahr, Passwort |
-| Stundentafeln | Vorlagen für Klassenstufen (Fach → Stunden) |
-| Klassen | Anlegen, Bearbeiten (Name, Farbe, Fächerstunden), Löschen |
-| Lehrkräfte | Einzeln hinzufügen oder per Excel-Import (Copy&Paste) |
+| Stundentafeln | Vorlagen fÃ¼r Klassenstufen (Fach â†’ Stunden) |
+| Klassen | Anlegen, Bearbeiten (Name, Farbe, FÃ¤cherstunden), LÃ¶schen |
+| LehrkrÃ¤fte | Einzeln hinzufÃ¼gen oder per Excel-Import (Copy&Paste) |
 | Datensicherung | JSON-Export und -Import |
-| Zurücksetzen | Alle Einsätze löschen (Lehrkräfte bleiben) |
+| ZurÃ¼cksetzen | Alle EinsÃ¤tze lÃ¶schen (LehrkrÃ¤fte bleiben) |
 
 ### Druckansicht
-- **Unterrichtstabelle** (A4 quer): vollständiger Plan mit Schreiblinien
+- **Unterrichtstabelle** (A4 quer): vollstÃ¤ndiger Plan mit Schreiblinien
 - **Pro Lehrkraft** (A4 hoch): eine Seite pro Person mit Notizen
 
-### Änderungshistorie
-- Automatische Protokollierung jeder Zelländerung (Vorher → Nachher)
-- Notizänderungen werden ebenfalls erfasst
-- **Zäsuren**: benannte Markierungen zur Trennung von Planungsphasen
-- Begrenzt auf 2.000 Einträge (älteste fallen heraus)
+
+### Untis-Export
+- Navigationseintrag „Untis Export" lädt eine GPU002.TXT herunter
+- Komma-getrenntes Format, direkt in Untis importierbar (Unterrichts-Import)
+- Pro Lehrkraft/Klasse/Fach wird ein eigener Unterricht angelegt
+- Team-Teaching wird als getrennte Unterrichte exportiert
+- Zusatzaufgaben (z.B. Konferenzen, AGs) werden als Unterrichte ohne Klasse aufgenommen
+- Fachnamen werden automatisch auf Untis-Kurzel gemappt (Deutsch→D, Mathe→M, …)
+- Schuljahr, Start- und Enddatum werden aus den Einstellungen ubernommen
+- Raum-Felder bleiben leer (in der Einsatzplanung nicht erfasst)
+
+### Ã„nderungshistorie
+- Automatische Protokollierung jeder ZellÃ¤nderung (Vorher â†’ Nachher)
+- NotizÃ¤nderungen werden ebenfalls erfasst
+- **ZÃ¤suren**: benannte Markierungen zur Trennung von Planungsphasen
+- Begrenzt auf 2.000 EintrÃ¤ge (Ã¤lteste fallen heraus)
 
 ---
 
@@ -108,7 +120,7 @@ Alle Daten liegen in `einsaetze.json`:
 
 ```json
 {
-  "einstellungen": { "schulname": "…", "schuljahr": "…", "passwort_hash": "…" },
+  "einstellungen": { "schulname": "â€¦", "schuljahr": "â€¦", "passwort_hash": "â€¦" },
   "stundentafeln": { "1/2": { "Deutsch": 8, "Mathematik": 5 } },
   "klassen": {
     "blau 1/2": { "farbe": "#3a6ea5", "faecher": { "KL": 1, "Deutsch": 8 } }
@@ -122,8 +134,8 @@ Alle Daten liegen in `einsaetze.json`:
     }
   },
   "zusatz": [{ "bezeichnung": "AG Chor", "k": "Bel", "std": 2 }],
-  "notizen": { "blau 1/2": { "Deutsch": "Notiztext …" } },
-  "historie": [ … ]
+  "notizen": { "blau 1/2": { "Deutsch": "Notiztext â€¦" } },
+  "historie": [ â€¦ ]
 }
 ```
 
@@ -134,18 +146,21 @@ Die Datei kann manuell bearbeitet oder als Backup gespeichert und wieder eingesp
 ## Einstellungen
 
 ### Passwort
-Im Browser unter **Verwaltung → Passwort ändern** setzen. Das Passwort wird als bcrypt-Hash in `einsaetze.json` gespeichert. Das Klartext-Passwort in `config.php` (`PASSWORD`) dient nur als Fallback, wenn noch kein Hash hinterlegt ist.
+Im Browser unter **Verwaltung â†’ Passwort Ã¤ndern** setzen. Das Passwort wird als bcrypt-Hash in `einsaetze.json` gespeichert. Das Klartext-Passwort in `config.php` (`PASSWORD`) dient nur als Fallback, wenn noch kein Hash hinterlegt ist.
 
 ### Schulname & Schuljahr
-Erscheinen in Navigation, Login-Seite und Druckansichten. Ebenfalls unter **Verwaltung → Einstellungen**.
+Erscheinen in Navigation, Login-Seite und Druckansichten. Ebenfalls unter **Verwaltung â†’ Einstellungen**.
 
 ---
 
-## Tastaturkürzel (Einsatzplan)
+## TastaturkÃ¼rzel (Einsatzplan)
 
 | Taste | Funktion |
 |---|---|
-| `↓` / `↑` | Im Autocomplete-Dropdown navigieren |
-| `Enter` | Vorschlag übernehmen / Eingabe bestätigen |
-| `Escape` | Dropdown schließen, Eingabe zurücksetzen |
-| `Tab` | Zum nächsten Feld wechseln (speichert automatisch) |
+| `â†“` / `â†‘` | Im Autocomplete-Dropdown navigieren |
+| `Enter` | Vorschlag Ã¼bernehmen / Eingabe bestÃ¤tigen |
+| `Escape` | Dropdown schlieÃŸen, Eingabe zurÃ¼cksetzen |
+| `Tab` | Zum nÃ¤chsten Feld wechseln (speichert automatisch) |
+
+
+
